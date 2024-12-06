@@ -1,0 +1,55 @@
+﻿@model ExternalLoginsViewModel
+
+@{
+    ViewData["Title"] = "Управление внешними входами";
+    ViewData.AddActivePage(ManageNavPages.ExternalLogins);
+}
+
+<partial name="_StatusMessage" for="StatusMessage" />
+
+@if (Model.CurrentLogins?.Count > 0)
+{
+    <h4>Зарегистрированные входы</h4>
+    <table class="table">
+        <tbody>
+            @foreach (var login in Model.CurrentLogins)
+            {
+                <tr>
+                    <td>@login.LoginProvider</td>
+                    <td>
+                        @if (Model.ShowRemoveButton)
+                        {
+                            <form asp-action="RemoveLogin" method="post">
+                                <div>
+                                    <input asp-for="@login.LoginProvider" name="LoginProvider" type="hidden" />
+                                    <input asp-for="@login.ProviderKey" name="ProviderKey" type="hidden" />
+                                    <button type="submit" class="btn btn-default" title="Удалить этот вход @login.LoginProvider из вашей учетной записи">Удалить</button>
+                                </div>
+                            </form>
+                        }
+                        else
+                        {
+                            @: &nbsp;
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (Model.OtherLogins?.Count > 0)
+{
+    <h4>Добавить другую службу для входа.</h4>
+    <hr />
+    <form asp-action="LinkLogin" method="post" class="form-horizontal">
+        <div id="socialLoginList">
+            <p>
+                @foreach (var provider in Model.OtherLogins)
+                {
+                    <button type="submit" class="btn btn-default" name="provider" value="@provider.Name" title="Войти, используя вашу учетную запись @provider.DisplayName">@provider.DisplayName</button>
+                }
+            </p>
+        </div>
+    </form>
+}

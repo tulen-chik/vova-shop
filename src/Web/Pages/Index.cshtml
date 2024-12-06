@@ -1,0 +1,51 @@
+﻿@page
+@{
+    ViewData["Title"] = "Каталог"; // Устанавливаем заголовок страницы
+    @model IndexModel // Указываем модель для страницы
+
+}
+
+<section class="esh-catalog-hero">
+    <div class="container">
+        <img class="esh-catalog-title" src="~/images/main_banner_text.png" /> <!-- Заголовок каталога -->
+    </div>
+</section>
+
+<section class="esh-catalog-filters">
+    <div class="container">
+        <form method="get">
+            <!-- Форма для фильтров -->
+            <label class="esh-catalog-label" data-title="Бренд">
+                <select asp-for="@Model.CatalogModel.BrandFilterApplied" asp-items="@Model.CatalogModel.Brands" class="esh-catalog-filter"></select> <!-- Фильтр по брендам -->
+            </label>
+            <label class="esh-catalog-label" data-title="Тип">
+                <select asp-for="@Model.CatalogModel.TypesFilterApplied" asp-items="@Model.CatalogModel.Types" class="esh-catalog-filter"></select> <!-- Фильтр по типам -->
+            </label>
+            <input class="esh-catalog-send" type="image" src="~/images/arrow-right.svg" /> <!-- Кнопка отправки формы -->
+        </form>
+    </div>
+</section>
+
+<div class="container">
+    @if (Model.CatalogModel.CatalogItems.Any()) // Проверяем, есть ли товары в каталоге
+    {
+        <partial name="_pagination" for="CatalogModel.PaginationInfo" /> <!-- Подключаем частичное представление для пагинации -->
+
+        <div class="esh-catalog-items row">
+            @foreach (var catalogItem in Model.CatalogModel.CatalogItems) // Перебираем товары в каталоге
+            {
+                <div class="esh-catalog-item col-md-4">
+                    <partial name="_product" for="@catalogItem" /> <!-- Подключаем частичное представление для каждого товара -->
+                </div>
+            }
+        </div>
+
+        <partial name="_pagination" for="CatalogModel.PaginationInfo" /> <!-- Подключаем частичное представление для пагинации -->
+    }
+    else
+    {
+        <div class="esh-catalog-items row">
+            Нет результатов по вашему запросу <!-- Сообщение, если нет товаров -->
+        </div>
+    }
+</div>

@@ -1,0 +1,17 @@
+﻿@model CatalogItemViewModel // Указываем модель для представления элемента каталога
+
+<form asp-page="/Admin/EditCatalogItem" method="get">
+    <!-- Форма для редактирования элемента каталога, отправляемая методом GET -->
+    <div>
+        <img class="esh-catalog-thumbnail" src="@Model.PictureUri" /> <!-- Отображение миниатюры изображения элемента каталога -->
+        <div class="esh-catalog-name">
+            <span>@Model.Name</span> <!-- Отображение названия элемента каталога -->
+        </div>
+        <input class="esh-catalog-button" type="submit" value="[ Edit ]" /> <!-- Кнопка для отправки формы с текстом "Редактировать" -->
+        <!-- Скрытые поля для передачи данных о элементе каталога -->
+        <input type="hidden" asp-for="@Model.Id" name="id" /> <!-- Скрытое поле для идентификатора элемента -->
+        <input type="hidden" asp-for="@Model.Name" name="name" /> <!-- Скрытое поле для названия элемента -->
+        <input type="hidden" asp-for="@Model.PictureUri" name="pictureUri" /> <!-- Скрытое поле для URI изображения элемента -->
+        <input type="hidden" asp-for="@Model.Price" name="price" /> <!-- Скрытое поле для цены элемента -->
+    </div>
+</form>
